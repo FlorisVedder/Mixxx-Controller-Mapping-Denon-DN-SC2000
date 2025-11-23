@@ -252,8 +252,19 @@ DnSc2000.Global.prototype = new components.ComponentContainer();
  */
 DnSc2000.Library = function(hardware) {
     const NOTE_ON = hardware.getNoteOn();
+    const NOTE_OFF = hardware.getNoteOff();
 
-    this.browse = new components.Encoder({
+    this.browseButton = new components.Button({
+        midiIn: [NOTE_ON, hardware.getControl('browse')],
+        inKey: 'clear_search',
+    });
+
+    this.focusBackward = new components.Button({
+        midiIn: [NOTE_ON, hardware.getControl('previous')],
+        inKey: 'MoveFocusBackward',
+    });
+
+    this.browseTurn = new components.Encoder({
         midiIn: [hardware.getControlChange(), hardware.getControl('browseTurn')],
         input: function (channel, control, value) {
             if (value === ENCODER_RIGHT) {
@@ -277,6 +288,36 @@ DnSc2000.Library = function(hardware) {
         },
         shift: function() {
             this.inKey = "sort_focused_column";
+        },
+        input: function (channel, control, value, status, _group) {
+            let originalInKey = this.inKey;
+            let focus = engine.getParameter("[Library]", 'focused_widget');
+            if (focus === 3) {
+                // Make sure the track is loaded in the matching deck and not on the other deck.
+                this.inKey = "LoadSelectedTrack";
+                this.group = `[Channel${hardware.getGroupNumber()}]`
+            } else {
+                this.inKey = originalInKey;
+                this.group = "[Library]";
+            }
+            components.Button.prototype.input.call(this, channel, control, value, status, _group);
+        },
+    });
+
+    this.focusForward = new components.Button({
+        midiIn: [NOTE_ON, hardware.getControl('next')],
+        inKey: 'MoveFocusForward',
+    });
+
+    this.duplicate = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('duplicate')], [NOTE_OFF, hardware.getControl('duplicate')]],
+        inKey: 'CloneFromDeck',
+        group: `[Channel${hardware.getGroupNumber()}]`,
+        inValueScale: function (value) {
+            if (value === 1) {
+                return 2;
+            }
+           return 1
         },
     });
 
