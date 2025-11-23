@@ -86,10 +86,10 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
         // loop
         'loopIn': 0x37,
         'loopOut': 0x39,
-        'loopHalf': 0x69,
-        'loopDouble': 0x6A,
+        'minus': 0x69,
+        'plus': 0x6A,
         'autoLoop': 0x1D,
-        'filterRotate': 0x5D,
+        'filterTurn': 0x5D,
         'filterClick': 0x68,
         // hot-cues
         'hotCue1': 0x17,
@@ -131,6 +131,9 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
         'hotCue6': 0x1B,
         'hotCue7': 0x1D,
         'hotCue8': 0x20,
+        'loopIn': 0x24,
+        'loopOut': 0x40,
+        'autoLoop': 0x2B,
         'cue': 0x26,
         'play': 0x27,
     }
@@ -338,7 +341,7 @@ DnSc2000.Deck = function (hardware) {
             this.inKey = "rate_temp_down_small";
         }
     });
-    this['pitchBendUp'] = new components.Button({
+    this.pitchBendUp = new components.Button({
         midiIn: [[NOTE_ON, hardware.getControl('pitchBendUp')], [NOTE_OFF, hardware.getControl('pitchBendUp')]],
         unshift: function() {
             this.inKey = "rate_temp_up";
@@ -346,6 +349,88 @@ DnSc2000.Deck = function (hardware) {
         shift: function() {
             this.inKey = "rate_temp_up_small";
         }
+    });
+
+    this.size = new components.Encoder({
+        midiIn: [hardware.getControlChange(), hardware.getControl('filterTurn')],
+        input: function (channel, control, value) {
+            if (value === ENCODER_RIGHT) {
+                this.inSetParameter(this.inGetParameter() * 2);
+            } else if (value === ENCODER_LEFT) {
+                this.inSetParameter(this.inGetParameter() / 2);
+            }
+        },
+        unshift: function() {
+            this.inKey = "beatloop_size";
+        },
+        shift: function() {
+            this.inKey = "beatjump_size";
+        }
+    });
+
+    this.anchor = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('filterClick')], [NOTE_OFF, hardware.getControl('filterClick')]],
+        unshift: function() {
+            this.inKey = "loop_anchor";
+            this.type = components.Button.prototype.types.toggle;
+        },
+        shift: function() {
+            this.inKey = "beats_translate_curpos";
+            this.type = components.Button.prototype.types.push;
+        },
+
+    });
+
+    this.loopIn = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('loopIn')], [NOTE_OFF, hardware.getControl('loopIn')]],
+        midiOut: [CONTROL_CHANGE, LED_ON],
+        unshift: function() {
+            this.inKey = "loop_in";
+        },
+        shift: function() {
+            this.inKey = "loop_in_goto";
+        },
+        led: hardware.getLed('loopIn'),
+        outValueScale: DnSc2000.replacements.ledOutValueScale,
+    });
+
+    this.loopOut = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('loopOut')], [NOTE_OFF, hardware.getControl('loopOut')]],
+        midiOut: [CONTROL_CHANGE, LED_ON],
+        unshift: function() {
+            this.inKey = "loop_out";
+        },
+        shift: function() {
+            this.inKey = "loop_out_goto";
+        },
+        led: hardware.getLed('loopOut'),
+        outValueScale: DnSc2000.replacements.ledOutValueScale,
+    });
+
+    this.beatJumpBackward = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('minus')], [NOTE_OFF, hardware.getControl('minus')]],
+        inKey: "beatjump_backward",
+        outValueScale: DnSc2000.replacements.ledOutValueScale,
+    });
+
+    this.loopActivate = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('autoLoop')], [NOTE_OFF, hardware.getControl('autoLoop')]],
+        midiOut: [CONTROL_CHANGE, LED_ON],
+        outKey: "loop_enabled",
+        unshift: function() {
+            this.inKey = "beatloop_activate";
+        },
+        shift: function() {
+            this.inKey = "reloop_toggle";
+        },
+        led: hardware.getLed('autoLoop'),
+        outValueScale: DnSc2000.replacements.ledOutValueScale,
+    });
+
+    this.beatJumpForward = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('plus')], [NOTE_OFF, hardware.getControl('plus')]],
+        inKey: "beatjump_forward",
+        outValueScale: DnSc2000.replacements.ledOutValueScale,
     });
 
     for (let i =1; i <= 8; i++) {
