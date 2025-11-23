@@ -27,6 +27,9 @@ DnSc2000.Hardware = function (midiChannel, groupNumber) {
     this.midiChannel = midiChannel;
     this.groupNumber = groupNumber;
 
+    this.controlList = {};
+    this.ledList = {};
+
     const NOTE_ON = 0x90;
     const NOTE_OFF = 0x80;
     const CONTROL_CHANGE= 0xB0;
@@ -88,7 +91,7 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
         'autoLoop': 0x1D,
         'filterRotate': 0x5D,
         'filterClick': 0x68,
-        // hotcues
+        // hot-cues
         'hotCue1': 0x17,
         'hotCue2': 0x18,
         'hotCue3': 0x19,
@@ -120,6 +123,14 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
     this.ledList = {
         'keyLock': 0x08,
         'sync': 0x09,
+        'hotCue1': 0x11,
+        'hotCue2': 0x13,
+        'hotCue3': 0x15,
+        'hotCue4': 0x17,
+        'hotCue5': 0x19,
+        'hotCue6': 0x1B,
+        'hotCue7': 0x1D,
+        'hotCue8': 0x20,
         'cue': 0x26,
         'play': 0x27,
     }
@@ -142,6 +153,8 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
 DnSc2000.EffectsHardware = function (midiChannel, groupNumber, index) {
     this.prototype = DnSc2000.Hardware.prototype;
     this.prototype.call(this, midiChannel, groupNumber);
+    this.index = index;
+
     this.layout = {
         'dryWetTurn': [0x55, 0x59],
         'param1Turn': [0x56, 0x5A],
@@ -239,7 +252,7 @@ DnSc2000.Library = function(hardware) {
 
     this.browse = new components.Encoder({
         midiIn: [hardware.getControlChange(), hardware.getControl('browseTurn')],
-        input: function (channel, control, value, status, group) {
+        input: function (channel, control, value) {
             if (value === ENCODER_RIGHT) {
                 this.inSetParameter(1);
             } else if (value === ENCODER_LEFT) {
@@ -273,7 +286,6 @@ DnSc2000.Library = function(hardware) {
 DnSc2000.Library.prototype = new components.ComponentContainer();
 
 
-
 ////////////////////////////////////////////////////////////////////////
 //*                                                                  *//
 //*            Components JS implementations for Deck's              *//
@@ -282,9 +294,6 @@ DnSc2000.Library.prototype = new components.ComponentContainer();
 
 /**
  * Constructor for the deck functionality.
- *
- * @param {DnSc2000.groupMapping} channelMapping
- *   Instance of group hardware object.
  */
 DnSc2000.Deck = function (hardware) {
     components.Deck.call(this, hardware.getGroupNumber());
@@ -329,7 +338,7 @@ DnSc2000.Deck = function (hardware) {
             this.inKey = "rate_temp_down_small";
         }
     });
-    this.pitchBendUp = new components.Button({
+    this['pitchBendUp'] = new components.Button({
         midiIn: [[NOTE_ON, hardware.getControl('pitchBendUp')], [NOTE_OFF, hardware.getControl('pitchBendUp')]],
         unshift: function() {
             this.inKey = "rate_temp_up";
@@ -338,6 +347,16 @@ DnSc2000.Deck = function (hardware) {
             this.inKey = "rate_temp_up_small";
         }
     });
+
+    for (let i =1; i <= 8; i++) {
+        this['hotCue' + i] = new components.HotcueButton({
+            midiIn: [[NOTE_ON, hardware.getControl('hotCue' + i)], [NOTE_OFF, hardware.getControl('hotCue' + i)]],
+            midiOut: [CONTROL_CHANGE, LED_ON],
+            number: i,
+            led: hardware.getLed('hotCue' + i),
+            outValueScale: DnSc2000.replacements.ledOutValueScale,
+        });
+    }
 
     this.jogWheel = new components.JogWheelBasic({
         deck: hardware.getGroupNumber(),
@@ -408,8 +427,8 @@ DnSc2000.replacements = {
      *
      * In contrast to other controllers the midiSendShortMsg works slightly different.
      * sendShortMsg(status, byte1, byte2)
-     * - byte1 is the led status value (on or of)
-     * - byte2 is the number for the led to light up
+     * - byte1 is the LED status value (on or off)
+     * - byte2 is the number for the LED to light up
      * Therefore:
      * this.midiOut[0][1] is set to that on or of value.
      * this.led is the return value for this function
@@ -466,7 +485,7 @@ DnSc2000.ShiftButton = (function() {
             }
         };
 
-        this.input = function (channel, control, value, status, group) {
+        this.input = function (channel, control, value) {
             this.action = 'unshift';
             if (value === VALUE_ON) {
                 this.action = 'shift';
