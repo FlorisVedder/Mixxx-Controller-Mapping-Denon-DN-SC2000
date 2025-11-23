@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MixxxControllerPreset schemaVersion="1" mixxxVersion="2.6+">
+    <info>
+        <name>Denon DN-SC2000 FV</name>
+        <author>Floris Vedder</author>
+        <description>Denon DN-SC2000 mapping based on ComponentsJS with midiIn and midiOut mapping. Without control configuration in the xml.</description>
+    </info>
+    <controller id="AMXFV">
+        <scriptfiles>
+            <file filename="midi-components-0-FV.js" />
+            <file filename="Denon-SC2000-scripts.js" functionprefix="DnSc2000" />
+        </scriptfiles>
+        <controls>
+            <control>
+                <status>0xE0</status>
+                <midino>0x5F</midino>
+                <group>[Channel1]</group>
+                <key>rate</key>
+                <options>
+                    <soft-takeover/>
+                </options>
+            </control>
+            <control>
+                <status>0xE1</status>
+                <midino>0x5F</midino>
+                <group>[Channel2]</group>
+                <key>rate</key>
+                <options>
+                    <soft-takeover/>
+                </options>
+            </control>
+            <control>
+                <status>0xB0</status>
+                <midino>0x51</midino>
+                <group>[Channel1]</group>
+                <key>DnSc2000.deckA.jogWheel.inputWheel</key>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+            <control>
+                <status>0xB1</status>
+                <midino>0x51</midino>
+                <group>[Channel2]</group>
+                <key>DnSc2000.deckB.jogWheel.inputWheel</key>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x51</midino>
+                <group>[Channel1]</group>
+                <key>DnSc2000.deckA.jogWheel.inputTouch</key>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x91</status>
+                <midino>0x51</midino>
+                <group>[Channel2]</group>
+                <key>DnSc2000.deckB.jogWheel.inputTouch</key>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x51</midino>
+                <group>[Channel1]</group>
+                <key>DnSc2000.deckA.jogWheel.inputTouch</key>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x81</status>
+                <midino>0x51</midino>
+                <group>[Channel2]</group>
+                <key>DnSc2000.deckB.jogWheel.inputTouch</key>
+                <options>
+                    <Script-Binding/>
+                </options>
+            </control>
+        </controls>
+        <outputs/>
+    </controller>
+</MixxxControllerPreset>

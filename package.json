@@ -1,0 +1,12 @@
+{
+  "name": "mixxx-denon-dn-sc2000-fv",
+  "version": "0.0.0",
+  "description": "Controller mapping of the Denon DN-SC2000 controller for Mixxx",
+  "license": "GPL-3.0-or-later",
+  "author": "Floris Vedder",
+  "main": "Denon-SC2000-scripts.js",
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "eslint": "^9.29.0"
+  }
+}
