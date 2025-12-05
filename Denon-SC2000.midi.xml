@@ -10,26 +10,6 @@
             <file filename="midi-components-0-FV.js" />
             <file filename="Denon-SC2000-scripts.js" functionprefix="DnSc2000" />
         </scriptfiles>
-        <controls>
-            <control>
-                <status>0xE0</status>
-                <midino>0x5F</midino>
-                <group>[Channel1]</group>
-                <key>rate</key>
-                <options>
-                    <soft-takeover/>
-                </options>
-            </control>
-            <control>
-                <status>0xE1</status>
-                <midino>0x5F</midino>
-                <group>[Channel2]</group>
-                <key>rate</key>
-                <options>
-                    <soft-takeover/>
-                </options>
-            </control>
-        </controls>
         <outputs/>
     </controller>
 </MixxxControllerPreset>

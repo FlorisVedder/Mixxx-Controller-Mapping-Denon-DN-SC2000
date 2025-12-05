@@ -504,6 +504,11 @@ DnSc2000.Deck = function (hardware) {
         },
     });
 
+    this.pitchFader = new components.Pot({
+        midiIn: [[hardware.getPitchStatus(), hardware.getControl('pitch')], [hardware.getPitchStatus(), hardware.getControl('pitch')]],
+        inKey: 'rate',
+    });
+
     this.backward = new components.Button({
         midiIn: [[NOTE_ON, hardware.getControl('backward')], [NOTE_OFF, hardware.getControl('backward')]],
         unshift: function() {
