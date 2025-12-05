@@ -12,4 +12,20 @@
         </scriptfiles>
         <outputs/>
     </controller>
+    <settings>
+        <option variable="midiChannel" type="enum" label="Midi Channel">
+            <value label="1 and 2" default="true">0</value>
+            <value label="3 and 4">2</value>
+            <value label="5 and 6">4</value>
+            <value label="7 and 8">6</value>
+            <description>
+                Match this with the midi channel selected on the controller.
+                Instructions how to do that are on the rear of the controller.
+            </description>
+        </option>
+        <group label="Deck assignement">
+            <option variable="blueDeck" type="integer" min="1" default="1" max="4" label="Deck A: Blue"/>
+            <option variable="redDeck" type="integer" min="1" default="2" max="4" label="Deck B: Red"/>
+        </group>
+    </settings>
 </MixxxControllerPreset>

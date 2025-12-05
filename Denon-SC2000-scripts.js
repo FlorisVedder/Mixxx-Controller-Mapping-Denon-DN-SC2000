@@ -192,10 +192,11 @@ DnSc2000.EffectsHardware = function (midiChannel, groupNumber, index) {
  * @see https://github.com/mixxxdj/mixxx/wiki/Midi-Scripting#script-file-header
  */
 DnSc2000.init = function () {
-    let midiChannelDeckA = 0;
+    let midiChannelDeckA = parseInt(engine.getSetting("midiChannel"));
     let midiChannelDeckB = midiChannelDeckA + 1;
-    let hardwareDeckA = new DnSc2000.DeckHardware(midiChannelDeckA, 1);
-    let hardwareDeckB = new DnSc2000.DeckHardware(midiChannelDeckB, 2);
+
+    let hardwareDeckA = new DnSc2000.DeckHardware(midiChannelDeckA, parseInt(engine.getSetting("blueDeck")));
+    let hardwareDeckB = new DnSc2000.DeckHardware(midiChannelDeckB, parseInt(engine.getSetting("redDeck")));
 
     this.globalA = new DnSc2000.Global(hardwareDeckA);
     this.globalB = new DnSc2000.Global(hardwareDeckB);
