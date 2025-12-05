@@ -29,60 +29,6 @@
                     <soft-takeover/>
                 </options>
             </control>
-            <control>
-                <status>0xB0</status>
-                <midino>0x51</midino>
-                <group>[Channel1]</group>
-                <key>DnSc2000.deckA.jogWheel.inputWheel</key>
-                <options>
-                    <Script-Binding/>
-                </options>
-            </control>
-            <control>
-                <status>0xB1</status>
-                <midino>0x51</midino>
-                <group>[Channel2]</group>
-                <key>DnSc2000.deckB.jogWheel.inputWheel</key>
-                <options>
-                    <Script-Binding/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0x51</midino>
-                <group>[Channel1]</group>
-                <key>DnSc2000.deckA.jogWheel.inputTouch</key>
-                <options>
-                    <Script-Binding/>
-                </options>
-            </control>
-            <control>
-                <status>0x91</status>
-                <midino>0x51</midino>
-                <group>[Channel2]</group>
-                <key>DnSc2000.deckB.jogWheel.inputTouch</key>
-                <options>
-                    <Script-Binding/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0x51</midino>
-                <group>[Channel1]</group>
-                <key>DnSc2000.deckA.jogWheel.inputTouch</key>
-                <options>
-                    <Script-Binding/>
-                </options>
-            </control>
-            <control>
-                <status>0x81</status>
-                <midino>0x51</midino>
-                <group>[Channel2]</group>
-                <key>DnSc2000.deckB.jogWheel.inputTouch</key>
-                <options>
-                    <Script-Binding/>
-                </options>
-            </control>
         </controls>
         <outputs/>
     </controller>
