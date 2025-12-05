@@ -291,6 +291,11 @@ DnSc2000.Library = function(hardware) {
         },
         input: function (channel, control, value, status, _group) {
             let originalInKey = this.inKey;
+            if (originalInKey !== "GoToItem") {
+                components.Button.prototype.input.call(this, channel, control, value, status, _group);
+                return;
+            }
+
             let focus = engine.getParameter("[Library]", 'focused_widget');
             if (focus === 3) {
                 // Make sure the track is loaded in the matching deck and not on the other deck.
