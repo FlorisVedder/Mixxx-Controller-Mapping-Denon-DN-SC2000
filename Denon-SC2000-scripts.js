@@ -23,9 +23,10 @@ const LED_FLASH = 0x4C;
 //*                                                                  *//
 ////////////////////////////////////////////////////////////////////////
 
-DnSc2000.Hardware = function (midiChannel, groupNumber) {
+DnSc2000.Hardware = function (midiChannel, groupNumber, fxMapping) {
     this.midiChannel = midiChannel;
     this.groupNumber = groupNumber;
+    this.fxMapping = fxMapping;
 
     this.controlList = {};
     this.ledList = {};
@@ -55,11 +56,21 @@ DnSc2000.Hardware = function (midiChannel, groupNumber) {
         return PITCH_STATUS + this.midiChannel;
     };
 
-    this.getControl = function (controlName) {
+    this.getControl = function (controlName, index) {
+        if ("number" === typeof index) {
+            return this.controlList[controlName][index];
+        }
         return this.controlList[controlName];
     };
 
-    this.getLed = function (ledName) {
+    this.getFxUnitNumber = function (index) {
+        return this.fxMapping[index];
+    };
+
+    this.getLed = function (ledName, index) {
+        if ("number" === typeof index) {
+            return this.ledList[ledName][index];
+        }
         return this.ledList[ledName];
     }
 };
@@ -69,10 +80,18 @@ DnSc2000.Hardware = function (midiChannel, groupNumber) {
  *
  * All controls and leds except the fx section.
  */
-DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
+DnSc2000.DeckHardware = function (midiChannel, groupNumber, fxMapping) {
     this.prototype = DnSc2000.Hardware;
-    this.prototype.call(this, midiChannel, groupNumber);
+    this.prototype.call(this, midiChannel, groupNumber, fxMapping);
     this.controlList = {
+        'dryWetTurn': [0x55, 0x59],
+        'param1Turn': [0x56, 0x5A],
+        'param2Turn': [0x57, 0x5B],
+        'param3Turn': [0x58, 0x5C],
+        'dryWetClick': [0x15, 0x55],
+        'param1Click': [0x12, 0x52],
+        'param2Click': [0x13, 0x53],
+        'param3Click': [0x14, 0x54],
         // selectors
         'fxUnitSelector': 0x58,
         'deckChg': 0x03,
@@ -109,8 +128,7 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
         'play': 0x43,
         'jogwheel': 0x51,
         // fx
-        'fx1': 0x56,
-        'fx2': 0x57,
+        'fx': [0x56, 0x57],
         // settings
         'keyLock': 0x06,
         'sync': 0x6B,
@@ -121,6 +139,11 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
     };
 
     this.ledList = {
+        'dryWet': [0x5C, 0x60],
+        'param1': [0x5D, 0x61],
+        'param2': [0x5E, 0x62],
+        'param3': [0x5F, 0x63],
+        'fx': [0x5A, 0x5B],
         'keyLock': 0x08,
         'sync': 0x09,
         'hotCue1': 0x11,
@@ -139,47 +162,6 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber) {
     }
 };
 
-
-/**
- * Effect hardware.
- *
- * Separate effects hardware due to the differentiation with decks.
- *
- * The difference between Deck A and Deck B is based upon the midi channel.
- * But within that channel only one control number per element.
- *
- * The difference between FX unit is based upon the control numbers.
- * This means that Deck A (on midi channel zero) can have two separate FX units
- * from Deck B (on midi channel one) and both having two units. So that's a total
- * of 4 FX units.
- */
-DnSc2000.EffectsHardware = function (midiChannel, groupNumber, index) {
-    this.prototype = DnSc2000.Hardware.prototype;
-    this.prototype.call(this, midiChannel, groupNumber);
-    this.index = index;
-
-    this.layout = {
-        'dryWetTurn': [0x55, 0x59],
-        'param1Turn': [0x56, 0x5A],
-        'param2Turn': [0x57, 0xAB],
-        'param3Turn': [0x58, 0xAC],
-        'dryWetClick': [0x15, 0x55],
-        'param1Click': [0x12, 0x52],
-        'param2Click': [0x13, 0x53],
-        'param3Click': [0x14, 0x54],
-    };
-
-    this.getIndex = function () {
-        return this.index;
-    };
-
-    this.getControl = function(controlName) {
-        return this.layout[controlName][index];
-    }
-};
-
-
-
 ////////////////////////////////////////////////////////////////////////
 //*                                                                  *//
 //*                Required  Mixxx javascript methods                *//
@@ -193,10 +175,12 @@ DnSc2000.EffectsHardware = function (midiChannel, groupNumber, index) {
  */
 DnSc2000.init = function () {
     let midiChannelDeckA = parseInt(engine.getSetting("midiChannel"));
-    let midiChannelDeckB = midiChannelDeckA + 1;
+    let fxDeckA = [engine.getSetting("blueDeckFx1"), engine.getSetting("blueDeckFx2")];
+    let hardwareDeckA = new DnSc2000.DeckHardware(midiChannelDeckA, parseInt(engine.getSetting("blueDeck")), fxDeckA);
 
-    let hardwareDeckA = new DnSc2000.DeckHardware(midiChannelDeckA, parseInt(engine.getSetting("blueDeck")));
-    let hardwareDeckB = new DnSc2000.DeckHardware(midiChannelDeckB, parseInt(engine.getSetting("redDeck")));
+    let midiChannelDeckB = midiChannelDeckA + 1;
+    let fxDeckB = [engine.getSetting("redDeckFx1"), engine.getSetting("redDeckFx2")];
+    let hardwareDeckB = new DnSc2000.DeckHardware(midiChannelDeckB, parseInt(engine.getSetting("redDeck")), fxDeckB);
 
     this.globalA = new DnSc2000.Global(hardwareDeckA);
     this.globalB = new DnSc2000.Global(hardwareDeckB);
@@ -231,6 +215,86 @@ DnSc2000.shutdown = function () {
 //*                                                                  *//
 ////////////////////////////////////////////////////////////////////////
 
+DnSc2000.EffectUnit = function(hardware, index) {
+    const NOTE_ON = hardware.getNoteOn();
+    const NOTE_OFF = hardware.getNoteOff();
+    const CONTROL_CHANGE = hardware.getControlChange();
+    const UNIT_NUMBER = hardware.getFxUnitNumber(index);
+    const STEP_SIZE = 0.05
+
+    this.dryWet = new components.Encoder({
+        midiIn: [CONTROL_CHANGE, hardware.getControl('dryWetTurn', index)],
+        input: function (channel, control, value) {
+            if (value === ENCODER_RIGHT) {
+                this.inSetParameter(this.inGetParameter() + STEP_SIZE);
+            } else if (value === ENCODER_LEFT) {
+                this.inSetParameter(this.inGetParameter() - STEP_SIZE);
+            }
+        },
+        unshift: function () {
+            this.inKey = "mix";
+        },
+        shift: function () {
+            this.inKey = "chain_preset_selector";
+        },
+    });
+
+    this.dryWetClick = new components.Button({
+        midiIn: [[NOTE_ON, hardware.getControl('dryWetClick', index)], [NOTE_OFF, hardware.getControl('dryWetClick', index)]],
+        midiOut: [CONTROL_CHANGE, LED_ON],
+        type: components.Button.prototype.types.toggle,
+        unshift: function () {
+            this.inKey = "group_[Headphone]_enable";
+            this.outKey = "group_[Headphone]_enable";
+        },
+        shift: function () {
+            this.inKey = "mix_mode";
+            this.outKey = "mix_mode";
+        },
+        led: hardware.getLed('dryWet', index),
+        outValueScale: DnSc2000.replacements.ledOutValueScale,
+    });
+
+    for (let i = 1; i <= 3; i++) {
+        this['param' + i + 'Turn']= new components.Encoder({
+            midiIn: [CONTROL_CHANGE, hardware.getControl(`param${i}Turn`, index)],
+            inKey: 'meta',
+            input: function (channel, control, value) {
+                if (value === ENCODER_RIGHT) {
+                    this.inSetParameter(this.inGetParameter() + STEP_SIZE);
+                } else if (value === ENCODER_LEFT) {
+                    this.inSetParameter(this.inGetParameter() - STEP_SIZE);
+                }
+            },
+            group: `[EffectRack1_EffectUnit${UNIT_NUMBER}_Effect${i}]`,
+            unshift: function () {
+                this.inKey = "meta";
+            },
+            shift: function () {
+                this.inKey = "effect_selector";
+            },
+        });
+
+        this['param' + i + 'Click'] = new components.Button({
+            midiIn: [[NOTE_ON, hardware.getControl(`param${i}Click`, index)], [NOTE_OFF, hardware.getControl(`param${i}Click`, index)]],
+            midiOut: [CONTROL_CHANGE, LED_ON],
+            inKey: 'enabled',
+            outKey: 'enabled',
+            group: `[EffectRack1_EffectUnit${UNIT_NUMBER}_Effect${i}]`,
+            type: components.Button.prototype.types.toggle,
+            led: hardware.getLed(`param${i}`, index),
+            outValueScale: DnSc2000.replacements.ledOutValueScale,
+        });
+    }
+
+    this.reconnectComponents(function (component) {
+        if (component.group === undefined) {
+            component.group = "[EffectRack1_EffectUnit" + UNIT_NUMBER + "]";
+        }
+    });
+
+};
+DnSc2000.EffectUnit.prototype = new components.ComponentContainer();
 
 DnSc2000.Global = function(hardware) {
 
@@ -351,6 +415,21 @@ DnSc2000.Deck = function (hardware) {
     const NOTE_OFF = hardware.getNoteOff();
     const CONTROL_CHANGE = hardware.getControlChange();
     const JOGWHEEL_CENTER = 0X40
+
+    for (let i = 0; i < 2; i++){
+        this["fxUnit" + i] = new DnSc2000.EffectUnit(hardware, i);
+
+        this["fxOn" + i] = new components.Button({
+            midiIn: [[NOTE_ON, hardware.getControl('fx', i)], [NOTE_OFF, hardware.getControl('fx', i)]],
+            inKey: "group_[Channel" + hardware.getGroupNumber() + "]_enable",
+            outKey: "group_[Channel" + hardware.getGroupNumber() + "]_enable",
+            midiOut: [CONTROL_CHANGE, LED_ON],
+            led: hardware.getLed('fx', i),
+            outValueScale: DnSc2000.replacements.ledOutValueScale,
+            type: components.Button.prototype.types.toggle,
+            group: "[EffectRack1_EffectUnit" + hardware.getFxUnitNumber(i) + "]",
+        });
+    }
 
     this.syncButton = new components.SyncButton({
         midiIn: [[NOTE_ON, hardware.getControl('sync')], [NOTE_OFF, hardware.getControl('sync')]],

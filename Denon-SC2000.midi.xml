@@ -27,5 +27,11 @@
             <option variable="blueDeck" type="integer" min="1" default="1" max="4" label="Deck A: Blue"/>
             <option variable="redDeck" type="integer" min="1" default="2" max="4" label="Deck B: Red"/>
         </group>
+        <group label="FX assignement">
+            <option variable="blueDeckFx1" type="integer" min="1" default="1" max="4" label="Deck A: Blue [FX1]"/>
+            <option variable="blueDeckFx2" type="integer" min="1" default="2" max="4" label="Deck A: Blue [FX2]"/>
+            <option variable="redDeckFx1" type="integer" min="1" default="1" max="4" label="Deck B: Red [FX1]"/>
+            <option variable="redDeckFx2" type="integer" min="1" default="2" max="4" label="Deck B: Red [FX2]"/>
+        </group>
     </settings>
 </MixxxControllerPreset>
