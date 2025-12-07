@@ -495,7 +495,7 @@ DnSc2000.Deck = function (hardware) {
         wheelResolution: 2200,
         alpha: 1/8,
         group: "[Channel" + hardware.getGroupNumber() + "]",
-        midiIn: [[hardware.getNoteOn(), hardware.getControl('jogwheel')], [hardware.getNoteOff(), hardware.getControl('jogwheel')], [hardware.getControlChange(), hardware.getControl('jogwheel')]],
+        midiIn: {'wheel': [hardware.getControlChange(), hardware.getControl('jogwheel')], 'touch': [[hardware.getNoteOn(), hardware.getControl('jogwheel')], [hardware.getNoteOff(), hardware.getControl('jogwheel')]]},
         inValueScale: function (value) {
             let factor = 0.2;
             if (engine.isScratching(this.deck)) {
@@ -506,7 +506,7 @@ DnSc2000.Deck = function (hardware) {
     });
 
     this.pitchFader = new components.Pot({
-        midiIn: [[hardware.getPitchStatus(), hardware.getControl('pitch')], [hardware.getPitchStatus(), hardware.getControl('pitch')]],
+        midiIn: {'msb': [hardware.getPitchStatus(), hardware.getControl('pitch')], 'lsb': [hardware.getPitchStatus(), hardware.getControl('pitch')]},
         inKey: 'rate',
     });
 
