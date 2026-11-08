@@ -41,8 +41,8 @@ framework classes as IIFE modules inside the namespace.
 plus the PR #15491 additions (JS-side `midiIn`/`midiOut` registration). The  
 qualifier marks what the fork adds and keeps the name distinct from the  
 stock `midi-components-0.js` that Mixxx itself ships. Name confirmed  
-November 2026: lowercase `inout`. (The existing repos still carry the old  
-name `midi-components-0-FV.js` until the rename.)
+November 2026: lowercase `inout`. The rename is being  
+executed (file, XML entries and READMEs together).
 - The library is **not shipped or symlinked in the mapping repos** — each  
 repository documents a setup step: fetch the file from the PR #15491 branch  
 (mixxxdj/mixxx#15491) and place it next to the mapping scripts under the  
