@@ -652,7 +652,7 @@ DnSc2000.replacements = {
      */
     ledOutValueScale: function (value) {
         if (
-            !'led' in this
+            !('led' in this)
             || typeof this.midiOut !== 'object'
             || typeof this.midiOut[0] === 'undefined'
         ) {

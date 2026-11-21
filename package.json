@@ -6,7 +6,7 @@
   "author": "Floris Vedder",
   "main": "Denon-SC2000-scripts.js",
   "devDependencies": {
-    "@eslint/js": "^9.29.0",
-    "eslint": "^9.29.0"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0"
   }
 }
