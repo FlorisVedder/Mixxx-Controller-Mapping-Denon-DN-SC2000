@@ -1,3 +1,6 @@
 # Ignore all files in the .idea folder
 .idea/
 node_modules/
+
+# The components library fork — fetched from PR mixxxdj/mixxx#15491, never committed
+midi-components-0-inout.js

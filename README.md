@@ -271,12 +271,19 @@ loads:
 
 ```sh
 curl -L -o midi-components-0-inout.js \
-    https://raw.githubusercontent.com/FlorisVedder/mixxx/support-dynamic-binding-components/res/controllers/midi-components-0.0.js
+    https://raw.githubusercontent.com/FlorisVedder/mixxx-midiInput/support-dynamic-binding-components/res/controllers/midi-components-0.0.js
 ```
 
 The `inout` qualifier marks what the fork adds — JavaScript-side  
 `midiIn`/`midiOut` registration — and keeps the name distinct from the  
 stock `midi-components-0.0.js` that Mixxx itself ships.  
+
+**Keep the copy current.** `midi-components-0-inout.js` must always be a  
+verbatim copy of the most recent `res/controllers/midi-components-0.0.js`  
+from the PR's head branch (`FlorisVedder/mixxx-midiInput`, branch  
+`support-dynamic-binding-components` — the URL above). The file is  
+gitignored: never edit it and never commit it; when the PR updates,  
+re-run the command and replace the local copy.  
 
 **3. Copy the files** into the user presets folder — Preferences →  
 Controllers → *Open User Preset Folder*, or directly: Linux  
