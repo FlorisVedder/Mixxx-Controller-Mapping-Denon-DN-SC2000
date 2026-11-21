@@ -5,6 +5,9 @@
   "license": "GPL-3.0-or-later",
   "author": "Floris Vedder",
   "main": "Denon-SC2000-scripts.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.15.0"

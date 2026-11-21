@@ -13,14 +13,22 @@ module.exports = [
         ignores: ["node_modules/", "midi-components-0-inout.js"],
     },
     {
-        files: ["*.js"],
+        /* The mapping script only — per the repo standard exactly one
+         * <Controller>-scripts.js per repository. A bare "*.js" glob would
+         * also match eslint.config.js and tools/ (flat-config patterns
+         * without a slash match basenames at any depth). */
+        files: ["*-scripts.js"],
         languageOptions: {
+            /* QJSEngine (V4) is ES6 — anything newer must be verified
+             * against the manual for the declared mixxxVersion first. */
+            ecmaVersion: 6,
             sourceType: "script",
             globals: {
                 engine: "readonly",
                 midi: "readonly",
                 script: "readonly",
                 components: "readonly",
+                print: "readonly",
                 console: "readonly",
             },
         },
@@ -34,6 +42,7 @@ module.exports = [
     {
         files: ["eslint.config.js", "tools/**/*.js"],
         languageOptions: {
+            ecmaVersion: "latest",
             sourceType: "commonjs",
             globals: {
                 console: "readonly",
