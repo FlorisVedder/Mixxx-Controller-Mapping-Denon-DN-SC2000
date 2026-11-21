@@ -106,7 +106,8 @@ concentrate there — may split into two commits: flat controls first,
 multi-signal forms second). Then AMX, porting the validated pattern.  
 Both binding forms (§4) coexist mid-migration — they never interact per  
 control — so every commit leaves the mapping loadable. Wire-neutrality  
-gate per stage: the resolved binding table must diff empty against the  
+gate per stage (command in §11 step 6): the resolved binding table must  
+diff empty against the  
 previous commit; shift on/off is smoke-tested each stage; migration  
 commits carry only migration changes (fixes ship separately). Layout  
 migration precedes the ShiftButton port (§6) so neither project's  
@@ -333,10 +334,16 @@ After changing a mapping:
 
 5. Verify with `--controller-debug`: expected press/release pairs, LED lines  
  per state change, no unexpected reconnect lines.
-6. Record new hardware facts in the repository's README (hardware
+6. Run the repository's wired-in quality tooling where shipped: the  
+ wire-neutrality gate snapshot of every resolved MIDI binding  
+ (`node tools/dump-bindings.js --compare  
+ tools/<preset>-bindings-baseline.txt`) must diff empty after every  
+ change (exit 0); a differing resolved table is acceptable only in a  
+ deliberate behavior-fix commit, landing together with a regenerated  
+ baseline in that same commit. `npm run lint` must pass.
+7. Record new hardware facts in the repository's README (hardware
  section) — the repo carries the code, the README carries the wire facts.
  READMEs are regenerated from the knowledge masters on demand.
- facts.
 
 ## 12. Code style (cross-project section)
 

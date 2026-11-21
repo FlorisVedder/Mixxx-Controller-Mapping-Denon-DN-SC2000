@@ -305,8 +305,17 @@ hardware is set to, and assign decks and FX units to the layers.
 - [AGENTS.md](AGENTS.md) in the repository root is the standard this  
   mapping follows: project structure, code style and the verification  
   workflow.  
-- The repository carries npm tooling (`package.json`, ESLint) for linting  
-  the scripts during development (`npm ci` to install).  
+- The repository carries npm tooling: `package.json` with ESLint 10 and a  
+  flat `eslint.config.js` covering the mapping script (Mixxx QJSEngine  
+  scope with the VM globals declared) and the Node tools (`npm ci` to  
+  install, `npm run lint` to lint).  
+- `tools/dump-bindings.js` snapshots every resolved MIDI binding;  
+  `tools/dn-bindings-baseline.txt` is the committed baseline. After any  
+  change, run  
+  `node tools/dump-bindings.js --compare tools/dn-bindings-baseline.txt`:  
+  exit 0 means the resolved bindings are unchanged (wire-neutral), exit 1  
+  means they differ, which is acceptable only in a deliberate  
+  behavior-fix commit (regenerate the baseline in that same commit).  
 - Binding changes are verified on the hardware with `--controller-debug`;  
   the observed wire facts live in the hardware section above and are kept  
   in sync with the mapping.  
