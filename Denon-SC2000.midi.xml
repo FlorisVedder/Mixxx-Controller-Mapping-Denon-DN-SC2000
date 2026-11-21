@@ -3,7 +3,7 @@
     <info>
         <name>Denon DN-SC2000 FV</name>
         <author>Floris Vedder</author>
-        <description>Denon DN-SC2000 mapping based on ComponentsJS with midiIn and midiOut mapping. Without control configuration in the xml.</description>
+        <description>Denon DN-SC2000 mapping based on ComponentsJS with midiIn and midiOut mapping. Without control configuration in the XML.</description>
     </info>
     <controller id="AMXFV">
         <scriptfiles>

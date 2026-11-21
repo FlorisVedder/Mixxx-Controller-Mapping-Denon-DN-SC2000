@@ -1,0 +1,102 @@
+# dump-bindings snapshot (Denon DN-SC2000 FV)
+# settings: blueDeck=1 blueDeckFx1=1 blueDeckFx2=2 midiChannel=0 redDeck=2 redDeckFx1=1 redDeckFx2=2
+deckA.anchor               [Channel1]                         loop_anchor               -                         [0x90, 0x68] [0x80, 0x68]                              -             -
+deckA.backward             [Channel1]                         back                      -                         [0x90, 0x11] [0x80, 0x11]                              -             -
+deckA.beatJumpBackward     [Channel1]                         beatjump_backward         -                         [0x90, 0x69] [0x80, 0x69]                              -             -
+deckA.beatJumpForward      [Channel1]                         beatjump_forward          -                         [0x90, 0x6A] [0x80, 0x6A]                              -             -
+deckA.cueButton            [Channel1]                         cue_default               cue_indicator             [0x90, 0x42] [0x80, 0x42]                              [0xB0, 0x4B]  0x26
+deckA.forward              [Channel1]                         fwd                       -                         [0x90, 0x10] [0x80, 0x10]                              -             -
+deckA.fxOn0                [EffectRack1_EffectUnit1]          group_[Channel1]_enable   group_[Channel1]_enable   [0x90, 0x56] [0x80, 0x56]                              [0xB0, 0x4B]  0x5A
+deckA.fxOn1                [EffectRack1_EffectUnit2]          group_[Channel1]_enable   group_[Channel1]_enable   [0x90, 0x57] [0x80, 0x57]                              [0xB0, 0x4B]  0x5B
+deckA.fxUnit0.dryWet       [EffectRack1_EffectUnit1]          mix                       -                         [0xB0, 0x55]                                           -             -
+deckA.fxUnit0.dryWetClick  [EffectRack1_EffectUnit1]          group_[Headphone]_enable  group_[Headphone]_enable  [0x90, 0x15] [0x80, 0x15]                              [0xB0, 0x4B]  0x5C
+deckA.fxUnit0.param1Click  [EffectRack1_EffectUnit1_Effect1]  enabled                   enabled                   [0x90, 0x12] [0x80, 0x12]                              [0xB0, 0x4B]  0x5D
+deckA.fxUnit0.param1Turn   [EffectRack1_EffectUnit1_Effect1]  meta                      -                         [0xB0, 0x56]                                           -             -
+deckA.fxUnit0.param2Click  [EffectRack1_EffectUnit1_Effect2]  enabled                   enabled                   [0x90, 0x13] [0x80, 0x13]                              [0xB0, 0x4B]  0x5E
+deckA.fxUnit0.param2Turn   [EffectRack1_EffectUnit1_Effect2]  meta                      -                         [0xB0, 0x57]                                           -             -
+deckA.fxUnit0.param3Click  [EffectRack1_EffectUnit1_Effect3]  enabled                   enabled                   [0x90, 0x14] [0x80, 0x14]                              [0xB0, 0x4B]  0x5F
+deckA.fxUnit0.param3Turn   [EffectRack1_EffectUnit1_Effect3]  meta                      -                         [0xB0, 0x58]                                           -             -
+deckA.fxUnit1.dryWet       [EffectRack1_EffectUnit2]          mix                       -                         [0xB0, 0x59]                                           -             -
+deckA.fxUnit1.dryWetClick  [EffectRack1_EffectUnit2]          group_[Headphone]_enable  group_[Headphone]_enable  [0x90, 0x55] [0x80, 0x55]                              [0xB0, 0x4B]  0x60
+deckA.fxUnit1.param1Click  [EffectRack1_EffectUnit2_Effect1]  enabled                   enabled                   [0x90, 0x52] [0x80, 0x52]                              [0xB0, 0x4B]  0x61
+deckA.fxUnit1.param1Turn   [EffectRack1_EffectUnit2_Effect1]  meta                      -                         [0xB0, 0x5A]                                           -             -
+deckA.fxUnit1.param2Click  [EffectRack1_EffectUnit2_Effect2]  enabled                   enabled                   [0x90, 0x53] [0x80, 0x53]                              [0xB0, 0x4B]  0x62
+deckA.fxUnit1.param2Turn   [EffectRack1_EffectUnit2_Effect2]  meta                      -                         [0xB0, 0x5B]                                           -             -
+deckA.fxUnit1.param3Click  [EffectRack1_EffectUnit2_Effect3]  enabled                   enabled                   [0x90, 0x54] [0x80, 0x54]                              [0xB0, 0x4B]  0x63
+deckA.fxUnit1.param3Turn   [EffectRack1_EffectUnit2_Effect3]  meta                      -                         [0xB0, 0x5C]                                           -             -
+deckA.hotCue1              [Channel1]                         hotcue_1_activate         hotcue_1_status           [0x90, 0x17] [0x80, 0x17]                              [0xB0, 0x4B]  0x11
+deckA.hotCue2              [Channel1]                         hotcue_2_activate         hotcue_2_status           [0x90, 0x18] [0x80, 0x18]                              [0xB0, 0x4B]  0x13
+deckA.hotCue3              [Channel1]                         hotcue_3_activate         hotcue_3_status           [0x90, 0x19] [0x80, 0x19]                              [0xB0, 0x4B]  0x15
+deckA.hotCue4              [Channel1]                         hotcue_4_activate         hotcue_4_status           [0x90, 0x20] [0x80, 0x20]                              [0xB0, 0x4B]  0x17
+deckA.hotCue5              [Channel1]                         hotcue_5_activate         hotcue_5_status           [0x90, 0x21] [0x80, 0x21]                              [0xB0, 0x4B]  0x19
+deckA.hotCue6              [Channel1]                         hotcue_6_activate         hotcue_6_status           [0x90, 0x22] [0x80, 0x22]                              [0xB0, 0x4B]  0x1B
+deckA.hotCue7              [Channel1]                         hotcue_7_activate         hotcue_7_status           [0x90, 0x23] [0x80, 0x23]                              [0xB0, 0x4B]  0x1D
+deckA.hotCue8              [Channel1]                         hotcue_8_activate         hotcue_8_status           [0x90, 0x24] [0x80, 0x24]                              [0xB0, 0x4B]  0x20
+deckA.jogWheel             [Channel1]                         jog                       -                         wheel: [0xB0, 0x51]  touch: [0x90, 0x51] [0x80, 0x51]  -             -
+deckA.keyLock              [Channel1]                         keylock                   keylock                   [0x90, 0x06] [0x80, 0x06]                              [0xB0, 0x4B]  0x08
+deckA.loopActivate         [Channel1]                         beatloop_activate         loop_enabled              [0x90, 0x1D] [0x80, 0x1D]                              [0xB0, 0x4B]  0x2B
+deckA.loopIn               [Channel1]                         loop_in                   -                         [0x90, 0x37] [0x80, 0x37]                              [0xB0, 0x4A]  0x24
+deckA.loopOut              [Channel1]                         loop_out                  -                         [0x90, 0x39] [0x80, 0x39]                              [0xB0, 0x4A]  0x40
+deckA.pitchBendDown        [Channel1]                         rate_temp_down            -                         [0x90, 0x0D] [0x80, 0x0D]                              -             -
+deckA.pitchBendUp          [Channel1]                         rate_temp_up              -                         [0x90, 0x0C] [0x80, 0x0C]                              -             -
+deckA.pitchFader           [Channel1]                         rate                      -                         msb: [0xE0, 0x5F]  lsb: [0xE0, 0x5F]                   -             -
+deckA.playButton           [Channel1]                         play                      play_indicator            [0x90, 0x43] [0x80, 0x43]                              [0xB0, 0x4B]  0x27
+deckA.size                 [Channel1]                         beatloop_size             -                         [0xB0, 0x5D]                                           -             -
+deckA.syncButton           [Channel1]                         -                         sync_enabled              [0x90, 0x6B] [0x80, 0x6B]                              [0xB0, 0x4B]  0x09
+deckB.anchor               [Channel2]                         loop_anchor               -                         [0x91, 0x68] [0x81, 0x68]                              -             -
+deckB.backward             [Channel2]                         back                      -                         [0x91, 0x11] [0x81, 0x11]                              -             -
+deckB.beatJumpBackward     [Channel2]                         beatjump_backward         -                         [0x91, 0x69] [0x81, 0x69]                              -             -
+deckB.beatJumpForward      [Channel2]                         beatjump_forward          -                         [0x91, 0x6A] [0x81, 0x6A]                              -             -
+deckB.cueButton            [Channel2]                         cue_default               cue_indicator             [0x91, 0x42] [0x81, 0x42]                              [0xB1, 0x4B]  0x26
+deckB.forward              [Channel2]                         fwd                       -                         [0x91, 0x10] [0x81, 0x10]                              -             -
+deckB.fxOn0                [EffectRack1_EffectUnit1]          group_[Channel2]_enable   group_[Channel2]_enable   [0x91, 0x56] [0x81, 0x56]                              [0xB1, 0x4B]  0x5A
+deckB.fxOn1                [EffectRack1_EffectUnit2]          group_[Channel2]_enable   group_[Channel2]_enable   [0x91, 0x57] [0x81, 0x57]                              [0xB1, 0x4B]  0x5B
+deckB.fxUnit0.dryWet       [EffectRack1_EffectUnit1]          mix                       -                         [0xB1, 0x55]                                           -             -
+deckB.fxUnit0.dryWetClick  [EffectRack1_EffectUnit1]          group_[Headphone]_enable  group_[Headphone]_enable  [0x91, 0x15] [0x81, 0x15]                              [0xB1, 0x4B]  0x5C
+deckB.fxUnit0.param1Click  [EffectRack1_EffectUnit1_Effect1]  enabled                   enabled                   [0x91, 0x12] [0x81, 0x12]                              [0xB1, 0x4B]  0x5D
+deckB.fxUnit0.param1Turn   [EffectRack1_EffectUnit1_Effect1]  meta                      -                         [0xB1, 0x56]                                           -             -
+deckB.fxUnit0.param2Click  [EffectRack1_EffectUnit1_Effect2]  enabled                   enabled                   [0x91, 0x13] [0x81, 0x13]                              [0xB1, 0x4B]  0x5E
+deckB.fxUnit0.param2Turn   [EffectRack1_EffectUnit1_Effect2]  meta                      -                         [0xB1, 0x57]                                           -             -
+deckB.fxUnit0.param3Click  [EffectRack1_EffectUnit1_Effect3]  enabled                   enabled                   [0x91, 0x14] [0x81, 0x14]                              [0xB1, 0x4B]  0x5F
+deckB.fxUnit0.param3Turn   [EffectRack1_EffectUnit1_Effect3]  meta                      -                         [0xB1, 0x58]                                           -             -
+deckB.fxUnit1.dryWet       [EffectRack1_EffectUnit2]          mix                       -                         [0xB1, 0x59]                                           -             -
+deckB.fxUnit1.dryWetClick  [EffectRack1_EffectUnit2]          group_[Headphone]_enable  group_[Headphone]_enable  [0x91, 0x55] [0x81, 0x55]                              [0xB1, 0x4B]  0x60
+deckB.fxUnit1.param1Click  [EffectRack1_EffectUnit2_Effect1]  enabled                   enabled                   [0x91, 0x52] [0x81, 0x52]                              [0xB1, 0x4B]  0x61
+deckB.fxUnit1.param1Turn   [EffectRack1_EffectUnit2_Effect1]  meta                      -                         [0xB1, 0x5A]                                           -             -
+deckB.fxUnit1.param2Click  [EffectRack1_EffectUnit2_Effect2]  enabled                   enabled                   [0x91, 0x53] [0x81, 0x53]                              [0xB1, 0x4B]  0x62
+deckB.fxUnit1.param2Turn   [EffectRack1_EffectUnit2_Effect2]  meta                      -                         [0xB1, 0x5B]                                           -             -
+deckB.fxUnit1.param3Click  [EffectRack1_EffectUnit2_Effect3]  enabled                   enabled                   [0x91, 0x54] [0x81, 0x54]                              [0xB1, 0x4B]  0x63
+deckB.fxUnit1.param3Turn   [EffectRack1_EffectUnit2_Effect3]  meta                      -                         [0xB1, 0x5C]                                           -             -
+deckB.hotCue1              [Channel2]                         hotcue_1_activate         hotcue_1_status           [0x91, 0x17] [0x81, 0x17]                              [0xB1, 0x4B]  0x11
+deckB.hotCue2              [Channel2]                         hotcue_2_activate         hotcue_2_status           [0x91, 0x18] [0x81, 0x18]                              [0xB1, 0x4B]  0x13
+deckB.hotCue3              [Channel2]                         hotcue_3_activate         hotcue_3_status           [0x91, 0x19] [0x81, 0x19]                              [0xB1, 0x4B]  0x15
+deckB.hotCue4              [Channel2]                         hotcue_4_activate         hotcue_4_status           [0x91, 0x20] [0x81, 0x20]                              [0xB1, 0x4B]  0x17
+deckB.hotCue5              [Channel2]                         hotcue_5_activate         hotcue_5_status           [0x91, 0x21] [0x81, 0x21]                              [0xB1, 0x4B]  0x19
+deckB.hotCue6              [Channel2]                         hotcue_6_activate         hotcue_6_status           [0x91, 0x22] [0x81, 0x22]                              [0xB1, 0x4B]  0x1B
+deckB.hotCue7              [Channel2]                         hotcue_7_activate         hotcue_7_status           [0x91, 0x23] [0x81, 0x23]                              [0xB1, 0x4B]  0x1D
+deckB.hotCue8              [Channel2]                         hotcue_8_activate         hotcue_8_status           [0x91, 0x24] [0x81, 0x24]                              [0xB1, 0x4B]  0x20
+deckB.jogWheel             [Channel2]                         jog                       -                         wheel: [0xB1, 0x51]  touch: [0x91, 0x51] [0x81, 0x51]  -             -
+deckB.keyLock              [Channel2]                         keylock                   keylock                   [0x91, 0x06] [0x81, 0x06]                              [0xB1, 0x4B]  0x08
+deckB.loopActivate         [Channel2]                         beatloop_activate         loop_enabled              [0x91, 0x1D] [0x81, 0x1D]                              [0xB1, 0x4B]  0x2B
+deckB.loopIn               [Channel2]                         loop_in                   -                         [0x91, 0x37] [0x81, 0x37]                              [0xB1, 0x4A]  0x24
+deckB.loopOut              [Channel2]                         loop_out                  -                         [0x91, 0x39] [0x81, 0x39]                              [0xB1, 0x4A]  0x40
+deckB.pitchBendDown        [Channel2]                         rate_temp_down            -                         [0x91, 0x0D] [0x81, 0x0D]                              -             -
+deckB.pitchBendUp          [Channel2]                         rate_temp_up              -                         [0x91, 0x0C] [0x81, 0x0C]                              -             -
+deckB.pitchFader           [Channel2]                         rate                      -                         msb: [0xE1, 0x5F]  lsb: [0xE1, 0x5F]                   -             -
+deckB.playButton           [Channel2]                         play                      play_indicator            [0x91, 0x43] [0x81, 0x43]                              [0xB1, 0x4B]  0x27
+deckB.size                 [Channel2]                         beatloop_size             -                         [0xB1, 0x5D]                                           -             -
+deckB.syncButton           [Channel2]                         -                         sync_enabled              [0x91, 0x6B] [0x81, 0x6B]                              [0xB1, 0x4B]  0x09
+globalA.shiftButton        [Global]                           -                         -                         [0x90, 0x60] [0x80, 0x60]                              -             -
+globalB.shiftButton        [Global]                           -                         -                         [0x91, 0x60] [0x81, 0x60]                              -             -
+libraryA.browseButton      [Library]                          clear_search              -                         [0x90, 0x64]                                           -             -
+libraryA.browseClick       [Library]                          GoToItem                  -                         [0x90, 0x28]                                           -             -
+libraryA.browseTurn        [Library]                          MoveVertical              -                         [0xB0, 0x54]                                           -             -
+libraryA.duplicate         [Channel1]                         CloneFromDeck             -                         [0x90, 0x65] [0x80, 0x65]                              -             -
+libraryA.focusBackward     [Library]                          MoveFocusBackward         -                         [0x90, 0x30]                                           -             -
+libraryA.focusForward      [Library]                          MoveFocusForward          -                         [0x90, 0x29]                                           -             -
+libraryB.browseButton      [Library]                          clear_search              -                         [0x91, 0x64]                                           -             -
+libraryB.browseClick       [Library]                          GoToItem                  -                         [0x91, 0x28]                                           -             -
+libraryB.browseTurn        [Library]                          MoveVertical              -                         [0xB1, 0x54]                                           -             -
+libraryB.duplicate         [Channel2]                         CloneFromDeck             -                         [0x91, 0x65] [0x81, 0x65]                              -             -
+libraryB.focusBackward     [Library]                          MoveFocusBackward         -                         [0x91, 0x30]                                           -             -
+libraryB.focusForward      [Library]                          MoveFocusForward          -                         [0x91, 0x29]                                           -             -
