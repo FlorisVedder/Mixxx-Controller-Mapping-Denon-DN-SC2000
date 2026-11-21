@@ -48,7 +48,11 @@ repository documents a setup step: fetch the file from the PR #15491 branch
 (mixxxdj/mixxx#15491) and place it next to the mapping scripts under the  
 name above; the mapping XML loads it before the mapping script. One  
 authoritative source (the PR), no symlink breakage on GitHub or fresh  
-clones, no per-repo drift.
+clones, no per-repo drift. The local copy is a verbatim, gitignored file:  
+always the most recent `res/controllers/midi-components-0.0.js` from the  
+PR's head branch (`FlorisVedder/mixxx-midiInput`, branch  
+`support-dynamic-binding-components`) — never edit or commit it; re-fetch  
+and replace the copy whenever the PR updates.
 - Each repository carries a `README.md` describing the controller, its  
 hardware facts and conventions (channels, control layout, LED  
 conventions, differentiations), the setup step above, tooling, license,  
@@ -143,8 +147,10 @@ user: AMX `pflPressOnly`). **Only** when the signals genuinely route to
 different methods — not for looks; picking the array form instead silently  
 changes edge semantics. Literal (VCI-400 pitch fader, 14-bit):
   ```js
-  midiIn: {'msb': [INPUT.pitchMSB.continuesControl, INPUT.pitchMSB.controlNumber],
-           'lsb': [INPUT.pitchLSB.continuesControl, INPUT.pitchLSB.controlNumber]},
+  const options = {
+      midiIn: {'msb': [INPUT.pitchMSB.continuesControl, INPUT.pitchMSB.controlNumber],
+               'lsb': [INPUT.pitchLSB.continuesControl, INPUT.pitchLSB.controlNumber]},
+  };
   ```
 
 - Every LED-capable control declares `midiOut` + `outKey`.  
