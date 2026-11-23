@@ -116,8 +116,11 @@ regressions can mask the other's.
   2026): fxUnit construction moves from Deck to `init` (VCI-style fx  
   container; `fxOn` stays in Deck by preference); shift registration for  
   the fxUnits becomes explicit on the same shift button. The  
-  wire-neutrality gate applies unchanged (same bindings, new construction  
-  site; load-time LED trigger order may shift).
+  wire-neutrality gate applies with one verified exception (rule in  
+  §11 step 6): a construction-site move changes the label column of  
+  the snapshot (the component path, e.g. `deckA.fxUnit0.*` →  
+  `fxA.fxUnit0.*`) while every wire column stays identical, and the  
+  load-time LED trigger order may shift.
 
 - **Migration sequencing — parents and children** (settled November 2026;  
   the DN case was later resolved by the topology pre-stage above): when a  
@@ -340,7 +343,11 @@ After changing a mapping:
  tools/<preset>-bindings-baseline.txt`) must diff empty after every  
  change (exit 0); a differing resolved table is acceptable only in a  
  deliberate behavior-fix commit, landing together with a regenerated  
- baseline in that same commit. `npm run lint` must pass.
+ baseline in that same commit. A construction-site move may change  
+ only the label column of the snapshot (the component path) while every  
+ wire column stays identical: a label-only diff is wire-neutral; triage  
+ it (confirm no wire column changed) and regenerate the baseline in that  
+ same staged commit. `npm run lint` must pass.
 7. Record new hardware facts in the repository's README (hardware
  section) — the repo carries the code, the README carries the wire facts.
  READMEs are regenerated from the knowledge masters on demand.

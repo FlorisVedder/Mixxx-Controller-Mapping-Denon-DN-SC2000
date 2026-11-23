@@ -191,10 +191,15 @@ DnSc2000.init = function () {
     this.deckA = new DnSc2000.Deck(hardwareDeckA);
     this.deckB = new DnSc2000.Deck(hardwareDeckB);
 
+    this.fxA = new DnSc2000.FX(hardwareDeckA);
+    this.fxB = new DnSc2000.FX(hardwareDeckB);
+
     this.globalA.shiftButton.registerComponent(this.libraryA);
     this.globalB.shiftButton.registerComponent(this.libraryB);
     this.globalB.shiftButton.registerComponent(this.deckA);
     this.globalB.shiftButton.registerComponent(this.deckB);
+    this.globalB.shiftButton.registerComponent(this.fxA);
+    this.globalB.shiftButton.registerComponent(this.fxB);
 };
 
 /**
@@ -207,6 +212,8 @@ DnSc2000.shutdown = function () {
     this.libraryB.shutdown();
     this.deckA.shutdown();
     this.deckB.shutdown();
+    this.fxA.shutdown();
+    this.fxB.shutdown();
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -295,6 +302,18 @@ DnSc2000.EffectUnit = function(hardware, index) {
 
 };
 DnSc2000.EffectUnit.prototype = new components.ComponentContainer();
+
+/**
+ * FX section container: the per-unit EffectUnit children, constructed
+ * at init (container topology, AGENTS.md section 3 - init constructs
+ * every container; an index parameter only reaches into a shared map).
+ */
+DnSc2000.FX = function (hardware) {
+    for (let i = 0; i < 2; i++){
+        this["fxUnit" + i] = new DnSc2000.EffectUnit(hardware, i);
+    }
+};
+DnSc2000.FX.prototype = new components.ComponentContainer();
 
 DnSc2000.Global = function(hardware) {
 
@@ -417,8 +436,6 @@ DnSc2000.Deck = function (hardware) {
     const JOGWHEEL_CENTER = 0X40
 
     for (let i = 0; i < 2; i++){
-        this["fxUnit" + i] = new DnSc2000.EffectUnit(hardware, i);
-
         this["fxOn" + i] = new components.Button({
             midiIn: [[NOTE_ON, hardware.getControl('fx', i)], [NOTE_OFF, hardware.getControl('fx', i)]],
             inKey: "group_[Channel" + hardware.getGroupNumber() + "]_enable",
