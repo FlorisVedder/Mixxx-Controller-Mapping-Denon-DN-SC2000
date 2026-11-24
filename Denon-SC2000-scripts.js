@@ -16,6 +16,9 @@ const ENCODER_RIGHT = 0X00;
 const LED_ON = 0x4A;
 const LED_OFF = 0x4B;
 const LED_FLASH = 0x4C;
+const NOTE_ON = 0x90;
+const NOTE_OFF = 0x80;
+const CONTINUOUS_CONTROL = 0xB0;
 
 ////////////////////////////////////////////////////////////////////////
 //*                                                                  *//
@@ -120,7 +123,6 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber, fxMapping) {
         'hotCue7': 0x23,
         'hotCue8': 0x24,
         'hotCueSelect': 0x1A,
-        'shift': 0x60,
         // transport
         'backward': 0x11,
         'forward': 0x10,
@@ -164,6 +166,86 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber, fxMapping) {
 
 ////////////////////////////////////////////////////////////////////////
 //*                                                                  *//
+//*      Hardware layout — Element objects (AGENTS.md section 3)     *//
+//*                                                                  *//
+////////////////////////////////////////////////////////////////////////
+
+/**
+ * Base of the hardware layout: the shared Element class (standard
+ * section 3). One Element per control number and 1-based MIDI channel,
+ * computing the per-signal-class status words once. Verbatim the
+ * VCI-400 class, so the Element contract stays identical across all
+ * mappings.
+ */
+DnSc2000.midiMapBase = function () {
+    this.Element = function (midiChannel, controlNumber) {
+        let midiIncrement = midiChannel - 1;
+        this.controlNumber = controlNumber;
+        this.noteOn = NOTE_ON + midiIncrement;
+        this.noteOff = NOTE_OFF + midiIncrement;
+        this.continuesControl = CONTINUOUS_CONTROL + midiIncrement;
+    };
+};
+
+/**
+ * The per-side global map: the controller has two identical control
+ * sides (blue on the midiChannel setting, red on the next channel);
+ * the channel plan mirrors the legacy hardware constructors above,
+ * which die with the remaining container migrations.
+ *
+ * Channel conventions all agree on the human 1-based numbers: the
+ * midiChannel setting stores the human channel number (like its option
+ * labels), and the Element class counts 1-based (the status-byte low
+ * nibble plus one), so the blue side reads the setting directly and
+ * the red side is one channel up.
+ */
+DnSc2000.midiMapGlobal = function (instance) {
+    this.prototype = DnSc2000.midiMapBase;
+    this.prototype.call(this);
+
+    const CHANNEL_BLUE = parseInt(engine.getSetting("midiChannel"));
+    const CHANNEL_RED = CHANNEL_BLUE + 1;
+    const MIDI_CHANNELS = {
+        'A': CHANNEL_BLUE,
+        'B': CHANNEL_RED,
+    };
+
+    this.input = {
+        'shift': new this.Element(MIDI_CHANNELS[instance], 0x60),
+    };
+};
+
+/**
+ * The only place map instances are built (standard section 3):
+ * constructs each instance on first request and caches it, so every
+ * consumer of a channel plan receives the same instance.
+ */
+DnSc2000.factory = {
+    getMidiMap: function(type, instance){
+        if (typeof(this.midiMapStorage) === 'undefined') {
+            this.midiMapStorage = [];
+        }
+        if (typeof(instance) !== 'undefined') {
+            return this.getMidiMapForInstance(type, instance);
+        }
+        if (typeof(this.midiMapStorage[type]) === 'undefined') {
+            this.midiMapStorage[type] = new DnSc2000[type];
+        }
+        return this.midiMapStorage[type];
+    },
+    getMidiMapForInstance: function (type, instance) {
+        if (typeof(this.midiMapStorage[type]) === 'undefined') {
+            this.midiMapStorage[type] = [];
+        }
+        if (typeof(this.midiMapStorage[type][instance]) === 'undefined') {
+            this.midiMapStorage[type][instance] = new DnSc2000[type](instance);
+        }
+        return this.midiMapStorage[type][instance];
+    }
+};
+
+////////////////////////////////////////////////////////////////////////
+//*                                                                  *//
 //*                Required  Mixxx javascript methods                *//
 //*                                                                  *//
 ////////////////////////////////////////////////////////////////////////
@@ -174,7 +256,10 @@ DnSc2000.DeckHardware = function (midiChannel, groupNumber, fxMapping) {
  * @see https://github.com/mixxxdj/mixxx/wiki/Midi-Scripting#script-file-header
  */
 DnSc2000.init = function () {
-    let midiChannelDeckA = parseInt(engine.getSetting("midiChannel"));
+    /* The midiChannel setting stores the human 1-based channel number
+     * (MIDI convention, matching its option labels); the legacy hardware
+     * constructors below count 0-based status offsets. */
+    let midiChannelDeckA = parseInt(engine.getSetting("midiChannel")) - 1;
     let fxDeckA = [engine.getSetting("blueDeckFx1"), engine.getSetting("blueDeckFx2")];
     let hardwareDeckA = new DnSc2000.DeckHardware(midiChannelDeckA, parseInt(engine.getSetting("blueDeck")), fxDeckA);
 
@@ -182,8 +267,8 @@ DnSc2000.init = function () {
     let fxDeckB = [engine.getSetting("redDeckFx1"), engine.getSetting("redDeckFx2")];
     let hardwareDeckB = new DnSc2000.DeckHardware(midiChannelDeckB, parseInt(engine.getSetting("redDeck")), fxDeckB);
 
-    this.globalA = new DnSc2000.Global(hardwareDeckA);
-    this.globalB = new DnSc2000.Global(hardwareDeckB);
+    this.globalA = new DnSc2000.Global(this.factory.getMidiMap('midiMapGlobal', 'A'));
+    this.globalB = new DnSc2000.Global(this.factory.getMidiMap('midiMapGlobal', 'B'));
 
     this.libraryA = new DnSc2000.Library(hardwareDeckA);
     this.libraryB = new DnSc2000.Library(hardwareDeckB);
@@ -315,10 +400,12 @@ DnSc2000.FX = function (hardware) {
 };
 DnSc2000.FX.prototype = new components.ComponentContainer();
 
-DnSc2000.Global = function(hardware) {
+DnSc2000.Global = function(midiMap) {
+
+    const INPUT = midiMap.input;
 
     this.shiftButton = new DnSc2000.ShiftButton({
-        midiIn: [[hardware.getNoteOn(), hardware.getControl('shift')], [hardware.getNoteOff(), hardware.getControl('shift')]],
+        midiIn: [[INPUT.shift.noteOn, INPUT.shift.controlNumber], [INPUT.shift.noteOff, INPUT.shift.controlNumber]],
     });
 
     this.reconnectComponents(function (component) {

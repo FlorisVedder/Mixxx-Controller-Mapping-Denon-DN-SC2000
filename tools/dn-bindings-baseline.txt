@@ -1,5 +1,5 @@
 # dump-bindings snapshot (Denon DN-SC2000 FV)
-# settings: blueDeck=1 blueDeckFx1=1 blueDeckFx2=2 midiChannel=0 redDeck=2 redDeckFx1=1 redDeckFx2=2
+# settings: blueDeck=1 blueDeckFx1=1 blueDeckFx2=2 midiChannel=1 redDeck=2 redDeckFx1=1 redDeckFx2=2
 deckA.anchor               [Channel1]                         loop_anchor               -                         [0x90, 0x68] [0x80, 0x68]                              -             -
 deckA.backward             [Channel1]                         back                      -                         [0x90, 0x11] [0x80, 0x11]                              -             -
 deckA.beatJumpBackward     [Channel1]                         beatjump_backward         -                         [0x90, 0x69] [0x80, 0x69]                              -             -
